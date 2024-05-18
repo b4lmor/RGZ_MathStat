@@ -12,10 +12,10 @@ fun solveTask1A(sample: Array<Double>, sigma2: Double, epsilon: Double): Interva
     log.info("Calculating task1_a ...")
 
     val average = calculateAverage(sample)
-    val tau = calculateInverseCumulativeProbabilityOfNormalDistribution(1 - epsilon)
+    val tau = calculateInverseCumulativeProbabilityOfNormalDistribution(1 - epsilon / 2)
 
-    log.info("average = $average")
-    log.info("tau = $tau")
+//    log.info("average = $average")
+//    log.info("tau = $tau")
 
     val aStart = average - tau * sqrt(sigma2 / sample.size)
     val aEnd = average + tau * sqrt(sigma2 / sample.size)
@@ -23,7 +23,7 @@ fun solveTask1A(sample: Array<Double>, sigma2: Double, epsilon: Double): Interva
     log.info("a- = $aStart")
     log.info("a+ = $aEnd")
 
-    log.info("Calculating task1_a ... Done!")
+    log.info("Calculating task1_a ... Done!\n")
 
     return Interval(aStart, aEnd)
 }
@@ -33,22 +33,22 @@ fun solveTask1B(sample: Array<Double>, epsilon: Double): Interval {
 
     val average = calculateAverage(sample)
     val q = calculateInverseCumulativeProbabilityOfTDistribution(
-        1 - epsilon,
+        1 - epsilon / 2,
         (sample.size - 1).toDouble()
     )
-    val undisplacedDispersion = calculateUndisplacedSampleDispersion(sample)
+    val sampleDispersion = calculateSampleDispersion(sample)
 
-    log.info("average = $average")
-    log.info("q = $q")
-    log.info("S0 = $undisplacedDispersion")
+//    log.info("average = $average")
+//    log.info("q = $q")
+//    log.info("S0 = $sampleDispersion")
 
-    val aStart = average - q * sqrt(undisplacedDispersion / (sample.size - 1))
-    val aEnd = average + q * sqrt(undisplacedDispersion / (sample.size - 1))
+    val aStart = average - q * sqrt(sampleDispersion / (sample.size - 1))
+    val aEnd = average + q * sqrt(sampleDispersion / (sample.size - 1))
 
     log.info("a- = $aStart")
     log.info("a+ = $aEnd")
 
-    log.info("Calculating task1_b ... Done!")
+    log.info("Calculating task1_b ... Done!\n")
 
     return Interval(aStart, aEnd)
 }
@@ -65,8 +65,8 @@ fun solveTask1C(sample: Array<Double>, alpha: Double, epsilon: Double): Interval
         sample.size.toDouble()
     )
 
-    log.info("q1 = $q1")
-    log.info("q2 = $q2")
+//    log.info("q1 = $q1")
+//    log.info("q2 = $q2")
 
     val sumOfDeltas = sample.fold(0.0) { acc, x -> acc + (x - alpha).pow(2) }
 
@@ -76,7 +76,7 @@ fun solveTask1C(sample: Array<Double>, alpha: Double, epsilon: Double): Interval
     log.info("sigma2- = $sigma2Start")
     log.info("sigma2+ = $sigma2End")
 
-    log.info("Calculating task1_c ... Done!")
+    log.info("Calculating task1_c ... Done!\n")
 
     return Interval(sigma2Start, sigma2End)
 }
@@ -93,19 +93,19 @@ fun solveTask1D(sample: Array<Double>, epsilon: Double): Interval {
         sample.size.toDouble() - 1
     )
 
-    log.info("q1 = $q1")
-    log.info("q2 = $q2")
+    val sampleDispersion = calculateSampleDispersion(sample)
 
-    val undisplacedDispersion = calculateUndisplacedSampleDispersion(sample)
-    log.info("S0 = $undisplacedDispersion")
+//    log.info("q1 = $q1")
+//    log.info("q2 = $q2")
+//    log.info("S0 = $sampleDispersion")
 
-    val sigma2Start = sample.size * undisplacedDispersion / q2
-    val sigma2End = sample.size * undisplacedDispersion / q1
+    val sigma2Start = sample.size * sampleDispersion / q2
+    val sigma2End = sample.size * sampleDispersion / q1
 
     log.info("sigma2- = $sigma2Start")
     log.info("sigma2+ = $sigma2End")
 
-    log.info("Calculating task1_d ... Done!")
+    log.info("Calculating task1_d ... Done!\n")
 
     return Interval(sigma2Start, sigma2End)
 }
